@@ -1,0 +1,28 @@
+.advantage{
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  /* grid-template-rows: 50px 1fr; */
+  gap: 0 40px;
+  margin-bottom: 30px;
+}
+.check,
+.text{
+  display: grid;
+  grid-template-rows: 50px auto;
+}
+.check{
+  gap: 10px 0;
+}
+.text{
+  gap: 10px 0;
+}
+.line{
+  margin: 0px auto 0;
+  display: block;
+  width: 1px;
+  height: 100%;
+  background: #d2d2d2;
+}
+.title{
+  margin-top: 10px;
+}
