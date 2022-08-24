@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import {
   Advantage,
   Card,
@@ -14,19 +14,28 @@ import styles from './TopPageComponent.module.css';
 import { TopLevelCategory } from '../../interfaces/page.interface';
 import { SortEnum } from '../../components/Sort/Sort.props';
 import { sortReducer } from './sort.reducer';
+import { ProductModel } from '../../interfaces/product.interface';
+import { useRouter } from 'next/router';
 
 export default function TopPageComponent({
   page,
   products,
   firstCategory,
 }: TopPageComponentProps) {
-  const [{ products: sortedProducts, sort }, dispatchSort] = useReducer(sortReducer, {
-    products,
-    sort: SortEnum.Rating,
-  });
+  const [{ products: sortedProducts, sort }, dispatchSort] = useReducer(
+    sortReducer,
+    {
+      products,
+      sort: SortEnum.Rating,
+    }
+  );
+  const router = useRouter();
+  useEffect(() => {
+    setSort(sort, products);
+  }, [products]);
 
-  const setSort = (sort: SortEnum) => {
-    dispatchSort({ type: sort });
+  const setSort = (sort: SortEnum, products: ProductModel[] = []) => {
+    dispatchSort({ type: sort, products });
   };
   return (
     <div>

@@ -1,3 +1,6 @@
+.stars{
+  position: relative;
+}
 .filled svg{
   fill: var(--primary);
 }
@@ -6,4 +9,14 @@
 }
 .editable{
   cursor: pointer;
+}
+.error svg{
+  stroke: var(--red);
+}
+.errorMsg{
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  color: var(--red);
+  white-space: nowrap;
 }

@@ -8,16 +8,28 @@ import { Tag } from '../Tag/Tag';
 import { Button } from '../Button/Button';
 import { declOfNum, priceRu } from '../../helpers/helpers';
 import { Divider } from '../Divider/Divider';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { Review } from '../Review/Review';
+import { ReviewForm } from '../ReviewForm/ReviewForm';
 
 export const Product = ({
   product,
   className,
   ...props
 }: ProductProps): JSX.Element => {
-  const [isReviewOpened, setIsReviewOpened] = useState<boolean>(false)
+  const [isReviewOpened, setIsReviewOpened] = useState<boolean>(false);
+  const reviewRef = useRef<HTMLDivElement>(null);
+
+  const scrollToReview = () => {
+    setIsReviewOpened(true)
+    reviewRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    })
+  }
+
   return (
-    <>
+    <div className={className} {...props}>
       <Card className={styles.product}>
         <div className={styles.logo}>
           <Image
@@ -53,7 +65,7 @@ export const Product = ({
         <div className={styles.priceTitle}>Цена</div>
         <div className={styles.creditTitle}>Кредит</div>
         <div className={styles.ratingTitle}>
-          {product.reviewCount} Отзыв
+          <a href="#ref" onClick={scrollToReview}>{product.reviewCount} Отзыв</a>
           {declOfNum(product.reviewCount, ['', 'a', 'oв'])}
         </div>
         <Divider className={styles.hr} />
@@ -86,20 +98,27 @@ export const Product = ({
           <Button appearance="primary">Узнать подробнее</Button>
           <Button
             appearance="ghost"
-            arrow={'right'}
+            arrow={isReviewOpened ? 'down' : 'right'}
             className={styles.reviewButton}
+            onClick={() => setIsReviewOpened(!isReviewOpened)}
           >
             Читать отзывы
           </Button>
         </div>
-
       </Card>
-      <Card color='blue' className={cl(styles.review, {
-        [styles.opened]: isReviewOpened,
-        [styles.closed]: !isReviewOpened,
-      })}>
-
+      <Card
+        color="blue"
+        className={cl(styles.reviews, {
+          [styles.opened]: isReviewOpened,
+          [styles.closed]: !isReviewOpened,
+        })}
+        ref={reviewRef}
+      >
+        {product.reviews.map((r) => (
+          <Review key={r._id} review={r} />
+        ))}
+        <ReviewForm productId={product._id} />
       </Card>
-    </>
+    </div>
   );
 };

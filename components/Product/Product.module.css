@@ -3,7 +3,7 @@
   grid-template-columns:
     [start] 70px [logoend] 30px [titlestart] calc(50% - 100px)
     [middle] 1fr [pricestart] auto [priceend] 40px [creditstart] auto [creditend] 40px [ratestart] auto [end];
-  margin-bottom: 30px;
+  margin-top: 30px;
   padding: 30px;
 }
 .logo {
@@ -78,7 +78,9 @@
   font-size: 14px;
   line-height: 19px;
 }
-
+.ratingTitle a {
+  color: var(--primary);
+}
 .reviewButton{
   margin-left: 20px;
 }
@@ -126,6 +128,9 @@
 .opened{
   max-height: auto;
   padding: 30px;
+}
+.reviews{
+  transition: all .3s;
 }
 @media screen and (max-width: 1320px){
   .product{

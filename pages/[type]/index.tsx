@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
+import { API } from '../../helpers/api';
 import { firstLevelMenu } from '../../helpers/helpers';
 import { MenuItem } from '../../interfaces/menu.interface';
 import { withLayout } from '../../Layout/Layout';
@@ -17,7 +18,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   let paths: string[] = [];
   for (const m of firstLevelMenu) {
     const { data: menu } = await axios.post<MenuItem[]>(
-      process.env.NEXT_PUBLIC_DOMAIN + '/api/top-page/find',
+      API.topPage.find,
       { firstCategory: m.id }
     );
     paths = paths.concat(
@@ -46,7 +47,7 @@ export const getStaticProps: GetStaticProps<TypeProps> = async ({
     };
   }
   const { data: menu } = await axios.post<MenuItem[]>(
-    process.env.NEXT_PUBLIC_DOMAIN + '/api/top-page/find',
+    API.topPage.find,
     { firstCategory: firstCategoryItem.id }
   );
   return {

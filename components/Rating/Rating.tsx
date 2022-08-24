@@ -1,15 +1,13 @@
 import styles from './Rating.module.css';
 import { RatingProps } from './Rating.props';
 import cl from 'classnames';
-import { useEffect, useState, KeyboardEvent } from 'react';
+import { useEffect, useState, KeyboardEvent, ForwardedRef, forwardRef } from 'react';
 import StarIcon from './star.svg';
 
-export const Rating = ({
-  isEditable = false,
-  rating,
-  setRating,
-  ...props
-}: RatingProps): JSX.Element => {
+const Rating = forwardRef((
+  { isEditable = false, rating, error, setRating, ...props }: RatingProps,
+  ref: ForwardedRef<HTMLDivElement>
+): JSX.Element => {
   const [ratingArray, setRatingArray] = useState<JSX.Element[]>(
     new Array(5).fill(<></>)
   );
@@ -37,7 +35,7 @@ export const Rating = ({
           key={i}
           className={cl(styles.star, {
             [styles.filled]: i < currentRating,
-            [styles.editable]: isEditable
+            [styles.editable]: isEditable,
           })}
           onMouseEnter={() => changeDisplay(i + 1)}
           onMouseLeave={() => constructRating(rating)}
@@ -55,10 +53,17 @@ export const Rating = ({
     setRatingArray(updatedArray);
   };
   return (
-    <div {...props}>
+    <div className={cl(styles.stars, {
+      [styles.error]: error,
+    })} {...props} ref={ref}>
       {ratingArray.map((r: JSX.Element, i: number) => (
         <span key={i}>{r}</span>
       ))}
+      {error && <span className={styles.errorMsg}>{error.message}</span>}
     </div>
   );
-};
+});
+
+Rating.displayName = 'Rating'
+
+export {Rating}
